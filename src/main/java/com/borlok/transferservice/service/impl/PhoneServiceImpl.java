@@ -1,6 +1,7 @@
 package com.borlok.transferservice.service.impl;
 
 import com.borlok.transferservice.model.Phone;
+import com.borlok.transferservice.model.User;
 import com.borlok.transferservice.repository.PhoneRepository;
 import com.borlok.transferservice.service.PhoneService;
 import lombok.Data;
@@ -23,22 +24,31 @@ public class PhoneServiceImpl implements PhoneService {
 
     @Override
     @Transactional
-    public void updateForUser(List<Phone> existingPhones, List<String> phones) {
+    public void updateForUser(User user, List<String> phones) {
+        log.info("Updating existing phones");
         Set<String> newPhoneAddresses = new HashSet<>(phones);
-        Set<String> existingPhoneAddresses = existingPhones.stream().map(Phone::getPhone).collect(Collectors.toSet());
-        for(Phone phone : existingPhones)
-            if (!newPhoneAddresses.contains(phone.getPhone()))
-                phoneRepository.delete(phone);
-        for (String email : newPhoneAddresses)
-            if (!existingPhoneAddresses.contains(email)) {
+        List<Phone> existingPhone = user.getPhones();
+        Set<String> existingPhoneAddresses = existingPhone.stream().map(Phone::getPhone).collect(Collectors.toSet());
+        for (String phone : newPhoneAddresses)
+            if (!existingPhoneAddresses.contains(phone)) {
+                log.info("Adding new phone {}", phone);
                 Phone newPhone = new Phone();
-                newPhone.setPhone(email);
-                phoneRepository.save(newPhone);
+                newPhone.setUser(user);
+                newPhone.setPhone(phone);
+                user.getPhones().add(phoneRepository.save(newPhone));
             }
+        for(Phone phone : existingPhone) {
+            if (!newPhoneAddresses.contains(phone.getPhone())) {
+                log.info("Removing existing phone {}", phone.getPhone());
+                phoneRepository.delete(phone);
+                user.getPhones().remove(phone);
+            }
+        }
     }
 
     @Override
     public Optional<Phone> getByPhone(String phone) {
+        log.info("Get phone {}", phone);
         return phoneRepository.findByPhone(phone);
     }
 }

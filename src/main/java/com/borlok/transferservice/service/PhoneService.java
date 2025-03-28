@@ -1,6 +1,7 @@
 package com.borlok.transferservice.service;
 
 import com.borlok.transferservice.model.Phone;
+import com.borlok.transferservice.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,5 +13,5 @@ import java.util.Optional;
 
 public interface PhoneService {
     Optional<Phone> getByPhone(String phone);
-    void updateForUser(List<Phone> existingPhones, List<String> phones);
+    void updateForUser(User user, List<String> phones);
 }

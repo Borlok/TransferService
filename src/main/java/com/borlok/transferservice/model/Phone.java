@@ -16,7 +16,8 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="id", nullable=false, insertable=false, updatable=false)
+    @JoinColumn(name="user_id")
     private User user;
+    @Column
     private String phone;
 }

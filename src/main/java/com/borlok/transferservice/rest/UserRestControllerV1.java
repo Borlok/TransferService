@@ -21,19 +21,18 @@ import java.time.LocalDate;
 public class UserRestControllerV1 {
     private final UserService userService;
 
-    @PutMapping
-    public ResponseEntity<?> update(@RequestHeader("principal_user_id") Long userId, UserRequest userRequest) {
-        log.info("Updating user");
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long userId, @RequestBody UserRequest userRequest) {
+        log.info("Updating user with id {}", userId);
         return ResponseEntity.ok(UserResponse.of(userService.update(userId, userRequest)));
     }
 
-    @GetMapping
-    public ResponseEntity<?> getUsersByParameters(@RequestHeader("principal_user_id") Long userId,
-                                                  @RequestParam(value = "name", required = false) String name,
+    @GetMapping("/search")
+    public ResponseEntity<?> getUsersByParameters(@RequestParam(value = "name", required = false) String name,
                                                   @RequestParam(value = "email", required = false) String email,
                                                   @RequestParam(value = "phone", required = false) String phone,
                                                   @RequestParam(value = "date_of_birth", required = false) LocalDate dateOfBirth
                                                   ) {
-        return ResponseEntity.ok(userService.findByParameters(userId, UserSearchParameters.of(name, email, phone, dateOfBirth)));
+        return ResponseEntity.ok(userService.findByParameters(UserSearchParameters.of(name, email, phone, dateOfBirth)));
     }
 }

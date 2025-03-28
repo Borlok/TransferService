@@ -1,6 +1,7 @@
 package com.borlok.transferservice.service.impl;
 
 import com.borlok.transferservice.model.Email;
+import com.borlok.transferservice.model.User;
 import com.borlok.transferservice.repository.EmailRepository;
 import com.borlok.transferservice.service.EmailService;
 import lombok.Data;
@@ -23,22 +24,30 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     @Transactional
-    public void updateForUser(List<Email> existingEmails, List<String> emails) {
+    public void updateForUser(User user, List<String> emails) {
+        log.info("Updating existing emails");
         Set<String> newEmailAddresses = new HashSet<>(emails);
+        List<Email> existingEmails = new ArrayList<>(user.getEmails());
         Set<String> existingEmailAddresses = existingEmails.stream().map(Email::getEmail).collect(Collectors.toSet());
-        for(Email email : existingEmails)
-            if (!newEmailAddresses.contains(email.getEmail()))
-                emailRepository.delete(email);
         for (String email : newEmailAddresses)
             if (!existingEmailAddresses.contains(email)) {
+                log.info("Adding email {}", email);
                 Email newEmail = new Email();
+                newEmail.setUser(user);
                 newEmail.setEmail(email);
-                emailRepository.save(newEmail);
+                user.getEmails().add(emailRepository.save(newEmail));
+            }
+        for(Email email : existingEmails)
+            if (!newEmailAddresses.contains(email.getEmail())) {
+                log.info("Removing existing email {}", email);
+                emailRepository.delete(email);
+                user.getEmails().remove(email);
             }
     }
 
     @Override
     public Optional<Email> getByEmail(String email) {
+        log.info("Retrieving email with email {}", email);
         return emailRepository.findByEmail(email);
     }
 }

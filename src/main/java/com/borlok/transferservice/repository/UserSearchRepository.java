@@ -11,5 +11,5 @@ import java.util.List;
 
 
 public interface UserSearchRepository {
-    List<User> findAllByParameters(Long userId, UserSearchParameters userSearchParameters);
+    List<User> findAllByParameters(UserSearchParameters userSearchParameters);
 }

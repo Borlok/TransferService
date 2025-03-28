@@ -5,12 +5,14 @@ import com.borlok.transferservice.model.Phone;
 import com.borlok.transferservice.model.User;
 import com.borlok.transferservice.model.UserSearchParameters;
 import com.borlok.transferservice.repository.UserSearchRepository;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
@@ -26,7 +28,7 @@ public class UserSearchRepositoryImpl implements UserSearchRepository {
     private EntityManager em;
 
     @Override
-    public List<User> findAllByParameters(Long userId, UserSearchParameters userSearchParameters) {
+    public List<User> findAllByParameters(UserSearchParameters userSearchParameters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<User> userQuery = cb.createQuery(User.class);
         Root<User> userRoot = userQuery.from(User.class);
@@ -44,7 +46,7 @@ public class UserSearchRepositoryImpl implements UserSearchRepository {
     private void nameFilter(CriteriaQuery<User> multiselect, CriteriaBuilder cb, Root<User> userRoot, String name) {
         if (name == null)
             return;
-       multiselect.where(cb.like(cb.lower(userRoot.get("name")), name.toLowerCase() + "%"));
+        multiselect.where(cb.like(cb.lower(userRoot.get("name")), name.toLowerCase() + "%"));
     }
 
     private void emailFilter(CriteriaQuery<User> multiselect, CriteriaBuilder cb, Join<User, Email> emailJoin, String email) {

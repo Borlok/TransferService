@@ -1,7 +1,5 @@
 package com.borlok.transferservice.security;
 
-import com.borlok.transferservice.exception.auth.AuthenticationException;
-import com.borlok.transferservice.exception.auth.AuthenticationExceptionMessage;
 import com.borlok.transferservice.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -28,10 +26,10 @@ public class JwtFilter extends GenericFilterBean {
         log.debug("JWT Filter");
         HttpServletRequest request = (HttpServletRequest) req;
         String token = request.getHeader("Authorization");
-        if (token != null) {
-                Authentication auth = tokenService.authenticate(token);
+        if (token != null && tokenService.isValid(token)) {
+            Authentication auth = tokenService.authenticate(token);
+            if (auth != null)
                 SecurityContextHolder.getContext().setAuthentication(auth);
-
         }
         chain.doFilter(req, res);
     }

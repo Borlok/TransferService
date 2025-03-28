@@ -29,10 +29,10 @@ public class User {
     @Column
     @ToString.Exclude
     private String password;
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Email> emails;
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Phone> phones;
 

@@ -5,6 +5,7 @@ import com.borlok.transferservice.exception.EmailExceptionMessage;
 import com.borlok.transferservice.exception.PhoneException;
 import com.borlok.transferservice.exception.PhoneExceptionMessage;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,10 +24,10 @@ public final class UserRequest {
 
 
     public UserRequest(List<String> emails, List<String> phones) {
-        validateEmails(emails);
-        validatePhones(phones);
         this.emails = emails;
         this.phones = phones;
+        validateEmails(emails);
+        validatePhones(phones);
     }
 
     private void validateEmails(List<String> emails) {

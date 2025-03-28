@@ -7,7 +7,7 @@ import com.borlok.transferservice.model.User;
 import com.borlok.transferservice.service.TokenService;
 import com.borlok.transferservice.service.UserService;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -51,7 +51,7 @@ public class TokenServiceImpl implements TokenService {
 
         return Jwts.builder()
                 .subject(authData.getUsername())
-                .claim("principal_user_id", user.getId().toString())
+                .claim("user_id", user.getId().toString())
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .compact();
     }
@@ -64,14 +64,24 @@ public class TokenServiceImpl implements TokenService {
         Claims payload = build.parseSignedClaims(token).getPayload();
 
         String username = payload.getSubject();
-        String userId = payload.get("principal_user_id", String.class);
+        String userId = payload.get("user_id", String.class);
 
         User user = userService.getByEmailOrPhoneNumber(username);
-        if (user == null){
+        if (user == null) {
             log.error(AuthenticationExceptionMessage.JWT_TOKEN_IS_INVALID.name());
             SecurityContextHolder.clearContext();
             throw new AuthenticationException(AuthenticationExceptionMessage.JWT_TOKEN_IS_INVALID);
         }
         return new UsernamePasswordAuthenticationToken(userId, "", new ArrayList<>());
+    }
+
+    @Override
+    public boolean isValid(String token) {
+        try {
+            return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build().isSigned(token);
+        } catch (JwtException | IllegalArgumentException e) {
+            log.error(AuthenticationExceptionMessage.JWT_TOKEN_IS_INVALID.name());
+            throw new AuthenticationException(AuthenticationExceptionMessage.JWT_TOKEN_IS_INVALID);
+        }
     }
 }

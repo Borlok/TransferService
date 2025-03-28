@@ -12,4 +12,5 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public interface TokenService {
     String createToken(AuthenticationRequest authData, BCryptPasswordEncoder passwordEncoder);
     Authentication authenticate(String token);
+    boolean isValid(String token);
 }

@@ -16,5 +16,6 @@ import java.util.Optional;
 public interface PhoneRepository extends JpaRepository<Phone, Long> {
     @Query(value = "select * from phone_data where user_id = ?1", nativeQuery = true)
     List<Phone> findAllByUserId(Long userId);
+    @Query(value = "select * from phone_data where phone = ?1", nativeQuery = true)
     Optional<Phone> findByPhone(String phone);
 }

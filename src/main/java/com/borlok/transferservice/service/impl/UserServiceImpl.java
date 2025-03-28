@@ -9,6 +9,7 @@ import com.borlok.transferservice.service.PhoneService;
 import com.borlok.transferservice.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final PhoneService phoneService;
+
     @Override
     public User getByEmailOrPhoneNumber(String username) {
         log.info("getByEmailOrPhoneNumber: {}", username);
@@ -37,16 +39,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User update(Long userId, UserRequest userRequest) {
-        log.info("update: {}", userId);
+        log.info("update: {}", userRequest);
         User user = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionMessage.USER_IS_NOT_EXIST));
-        emailService.updateForUser(user.getEmails(), userRequest.getEmails());
-        phoneService.updateForUser(user.getPhones(), userRequest.getPhones());
-        return user;
+        emailService.updateForUser(user, userRequest.getEmails());
+        phoneService.updateForUser(user, userRequest.getPhones());
+        return userRepository.save(user);
     }
 
     @Override
-    public List<User> findByParameters(Long userId, UserSearchParameters userSearchParameters) {
+    public List<User> findByParameters(UserSearchParameters userSearchParameters) {
         log.info("findByParameters: {}", userSearchParameters);
-        return userRepository.findAllByParameters(userId, userSearchParameters);
+        return userRepository.findAllByParameters(userSearchParameters);
     }
 }
