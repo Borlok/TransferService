@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,26 +20,25 @@ import java.util.stream.Collectors;
 @Service
 public class PhoneServiceImpl implements PhoneService {
     private final PhoneRepository phoneRepository;
+
     @Override
     @Transactional
-    public List<Phone> updateForUser(Long userId, List<String> phones) {
-        log.info("Updating phones by userId {} with phones {}", userId, phones);
+    public void updateForUser(List<Phone> existingPhones, List<String> phones) {
         Set<String> newPhoneAddresses = new HashSet<>(phones);
-        List<Phone> existingPhones = phoneRepository.findAllByUserId(userId);
         Set<String> existingPhoneAddresses = existingPhones.stream().map(Phone::getPhone).collect(Collectors.toSet());
-        List<Phone> newPhoneList = new ArrayList<>();
-        for(Phone email : existingPhones)
-            if (!newPhoneAddresses.contains(email.getPhone()))
-                phoneRepository.delete(email);
-            else
-                newPhoneList.add(email);
+        for(Phone phone : existingPhones)
+            if (!newPhoneAddresses.contains(phone.getPhone()))
+                phoneRepository.delete(phone);
         for (String email : newPhoneAddresses)
             if (!existingPhoneAddresses.contains(email)) {
                 Phone newPhone = new Phone();
                 newPhone.setPhone(email);
                 phoneRepository.save(newPhone);
-                newPhoneList.add(newPhone);
             }
-        return newPhoneList;
+    }
+
+    @Override
+    public Optional<Phone> getByPhone(String phone) {
+        return phoneRepository.findByPhone(phone);
     }
 }

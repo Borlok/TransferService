@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Erofeevskiy Yuriy
@@ -15,4 +16,5 @@ import java.util.List;
 public interface EmailRepository extends JpaRepository<Email, Long> {
     @Query(value = "select * from email_data where user_id = ?1", nativeQuery = true)
     List<Email> findAllByUserId(Long userId);
+    Optional<Email> findByEmail(String email);
 }

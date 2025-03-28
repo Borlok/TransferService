@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Erofeevskiy Yuriy
@@ -28,18 +27,26 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final PhoneService phoneService;
     @Override
-    public Optional<User> getByEmailOrPhoneNumber(String username) {
+    public User getByEmailOrPhoneNumber(String username) {
         log.info("getByEmailOrPhoneNumber: {}", username);
-        return Optional.empty();
+        return emailService.getByEmail(username).map(Email::getUser)
+                .or(() -> phoneService.getByPhone(username).map(Phone::getUser))
+                .orElseThrow(() -> new UserException(UserExceptionMessage.USER_IS_NOT_EXIST));
     }
 
     @Override
     @Transactional
-    public UserDto update(Long userId, UserRequest userRequest) {
+    public User update(Long userId, UserRequest userRequest) {
         log.info("update: {}", userId);
         User user = userRepository.findById(userId).orElseThrow(() -> new UserException(UserExceptionMessage.USER_IS_NOT_EXIST));
-        List<Email> emails = emailService.updateForUser(user.getId(), userRequest.emails());
-        List<Phone> phones = phoneService.updateForUser(user.getId(), userRequest.phones());
-        return UserDto.of(user, emails, phones);
+        emailService.updateForUser(user.getEmails(), userRequest.getEmails());
+        phoneService.updateForUser(user.getPhones(), userRequest.getPhones());
+        return user;
+    }
+
+    @Override
+    public List<User> findByParameters(Long userId, UserSearchParameters userSearchParameters) {
+        log.info("findByParameters: {}", userSearchParameters);
+        return userRepository.findAllByParameters(userId, userSearchParameters);
     }
 }

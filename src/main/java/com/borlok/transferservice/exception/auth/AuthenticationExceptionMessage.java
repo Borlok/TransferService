@@ -6,5 +6,5 @@ package com.borlok.transferservice.exception.auth;
 
 
 public enum AuthenticationExceptionMessage {
-    PASSWORD_NOT_MATCHED, USER_NOT_FOUND
+    PASSWORD_NOT_MATCHED, JWT_TOKEN_IS_INVALID, USER_NOT_FOUND
 }

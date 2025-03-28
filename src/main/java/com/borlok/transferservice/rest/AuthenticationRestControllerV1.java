@@ -5,10 +5,8 @@ import com.borlok.transferservice.service.AuthenticationService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Erofeevskiy Yuriy
@@ -23,7 +21,12 @@ public class AuthenticationRestControllerV1 {
 
     @PostMapping
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
-        log.info("User's authentication: {}", authenticationRequest.username());
+        log.info("User's authentication: {}", authenticationRequest.getUsername());
         return ResponseEntity.ok(authenticationService.createAuthenticationToken(authenticationRequest));
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<?> check() {
+        return ResponseEntity.ok("Hello user with id " + SecurityContextHolder.getContext().getAuthentication().getName() + "!!!");
     }
 }

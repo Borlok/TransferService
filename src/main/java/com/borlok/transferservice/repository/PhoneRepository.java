@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Erofeevskiy Yuriy
@@ -15,4 +16,5 @@ import java.util.List;
 public interface PhoneRepository extends JpaRepository<Phone, Long> {
     @Query(value = "select * from phone_data where user_id = ?1", nativeQuery = true)
     List<Phone> findAllByUserId(Long userId);
+    Optional<Phone> findByPhone(String phone);
 }
