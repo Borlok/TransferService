@@ -1,5 +1,6 @@
 package com.borlok.transferservice.rest;
 
+import com.borlok.transferservice.exception.user.UserException;
 import com.borlok.transferservice.model.UserRequest;
 import com.borlok.transferservice.model.UserResponse;
 import com.borlok.transferservice.model.UserSearchParameters;
@@ -33,6 +34,11 @@ public class UserRestControllerV1 {
                                                   @RequestParam(value = "phone", required = false) String phone,
                                                   @RequestParam(value = "date_of_birth", required = false) LocalDate dateOfBirth
                                                   ) {
-        return ResponseEntity.ok(userService.findByParameters(UserSearchParameters.of(name, email, phone, dateOfBirth)));
+        return ResponseEntity.ok(UserResponse.of(userService.findByParameters(UserSearchParameters.of(name, email, phone, dateOfBirth))));
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<?> handleUserException(UserException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

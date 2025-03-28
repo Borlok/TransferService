@@ -27,7 +27,7 @@ public class PhoneServiceImpl implements PhoneService {
     public void updateForUser(User user, List<String> phones) {
         log.info("Updating existing phones");
         Set<String> newPhoneAddresses = new HashSet<>(phones);
-        List<Phone> existingPhone = user.getPhones();
+        List<Phone> existingPhone = new ArrayList<>(user.getPhones());
         Set<String> existingPhoneAddresses = existingPhone.stream().map(Phone::getPhone).collect(Collectors.toSet());
         for (String phone : newPhoneAddresses)
             if (!existingPhoneAddresses.contains(phone)) {

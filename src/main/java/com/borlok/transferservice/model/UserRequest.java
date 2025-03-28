@@ -22,7 +22,6 @@ public final class UserRequest {
     private final List<String> emails;
     private final List<String> phones;
 
-
     public UserRequest(List<String> emails, List<String> phones) {
         this.emails = emails;
         this.phones = phones;

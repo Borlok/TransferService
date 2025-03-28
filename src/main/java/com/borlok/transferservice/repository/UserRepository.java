@@ -2,6 +2,7 @@ package com.borlok.transferservice.repository;
 
 import com.borlok.transferservice.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,5 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>, UserSearchRepository {
+public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 }

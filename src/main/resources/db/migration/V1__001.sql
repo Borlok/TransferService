@@ -2,7 +2,7 @@ create table if not exists users
 (
     id            serial primary key,
     name          varchar(100) not null,
-    date_of_birth timestamp,
+    date_of_birth date,
     password      varchar(500)
 );
 create table if not exists accounts

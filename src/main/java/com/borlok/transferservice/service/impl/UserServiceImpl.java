@@ -4,12 +4,13 @@ import com.borlok.transferservice.exception.user.UserException;
 import com.borlok.transferservice.exception.user.UserExceptionMessage;
 import com.borlok.transferservice.model.*;
 import com.borlok.transferservice.repository.UserRepository;
+import com.borlok.transferservice.repository.impl.UserSpecification;
 import com.borlok.transferservice.service.EmailService;
 import com.borlok.transferservice.service.PhoneService;
 import com.borlok.transferservice.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +50,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findByParameters(UserSearchParameters userSearchParameters) {
         log.info("findByParameters: {}", userSearchParameters);
-        return userRepository.findAllByParameters(userSearchParameters);
+        Specification<User> spec = Specification.where(null);
+        spec = UserSpecification.nameFilter(spec, userSearchParameters.getName())
+                .and(UserSpecification.emailFilter(spec, userSearchParameters.getEmail()))
+                .and(UserSpecification.phoneFilter(spec, userSearchParameters.getPhone()))
+                .and(UserSpecification.birthFilter(spec, userSearchParameters.getDateOfBirth()));
+        return userRepository.findAll(spec);
     }
 }

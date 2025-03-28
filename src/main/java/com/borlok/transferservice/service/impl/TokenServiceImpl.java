@@ -78,9 +78,9 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public boolean isValid(String token) {
         try {
-            return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build().isSigned(token);
+            return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build()
+                    .parseSignedClaims(token).getPayload().get("user_id") != null;
         } catch (JwtException | IllegalArgumentException e) {
-            log.error(AuthenticationExceptionMessage.JWT_TOKEN_IS_INVALID.name());
             throw new AuthenticationException(AuthenticationExceptionMessage.JWT_TOKEN_IS_INVALID);
         }
     }
