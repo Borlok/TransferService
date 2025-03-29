@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
     private final TokenService tokenService;
-
+    private static final String [] SWAGGER_BASED_ENTRY_POINT = {"/swagger-ui.html", "/swagger-ui/**", "/webjars/**", "/swagger-resources/**", "/v2/api-docs/**", "/v3/api-docs/**"};
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz
                         .antMatchers("/auth").permitAll()
+                        .antMatchers(SWAGGER_BASED_ENTRY_POINT).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
