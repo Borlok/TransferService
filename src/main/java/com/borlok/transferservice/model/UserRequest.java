@@ -7,6 +7,7 @@ import com.borlok.transferservice.exception.user.PhoneExceptionMessage;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -23,10 +24,10 @@ public final class UserRequest {
     private List<String> phones;
 
     public UserRequest(List<String> emails, List<String> phones) {
-        this.emails = emails;
-        this.phones = phones;
         validateEmails(emails);
         validatePhones(phones);
+        this.emails = new ArrayList<>(emails);
+        this.phones = new ArrayList<>(phones);
     }
 
     private void validateEmails(List<String> emails) {
@@ -47,5 +48,23 @@ public final class UserRequest {
             if (!pattern.matcher(phone).matches())
                 throw new PhoneException(PhoneExceptionMessage.INVALID_PHONE_FORMAT);
         });
+    }
+
+    public void setEmails(List<String> emails) {
+        validateEmails(emails);
+        this.emails = new ArrayList<>(emails);
+    }
+
+    public void setPhones(List<String> phones) {
+        validatePhones(phones);
+        this.phones =  new ArrayList<>(phones);
+    }
+
+    public List<String> getEmails() {
+        return new ArrayList<>(emails);
+    }
+
+    public List<String> getPhones() {
+        return new ArrayList<>(phones);
     }
 }
