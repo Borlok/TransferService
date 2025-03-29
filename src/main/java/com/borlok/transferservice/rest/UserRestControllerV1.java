@@ -32,13 +32,17 @@ public class UserRestControllerV1 {
     public ResponseEntity<?> getUsersByParameters(@RequestParam(value = "name", required = false) String name,
                                                   @RequestParam(value = "email", required = false) String email,
                                                   @RequestParam(value = "phone", required = false) String phone,
-                                                  @RequestParam(value = "date_of_birth", required = false) LocalDate dateOfBirth
+                                                  @RequestParam(value = "date_of_birth", required = false) LocalDate dateOfBirth,
+                                                  @RequestParam(value = "page") Integer page,
+                                                  @RequestParam(value = "size") Integer size
                                                   ) {
-        return ResponseEntity.ok(UserResponse.of(userService.findByParameters(UserSearchParameters.of(name, email, phone, dateOfBirth))));
+        log.info("Filter users with parameters: name = {}, email = {}, phone = {}, date_of_birth = {}, page = {} size = {}", name, email, phone, dateOfBirth, page, size);
+        return ResponseEntity.ok(UserResponse.of(userService.findByParameters(UserSearchParameters.of(name, email, phone, dateOfBirth, page, size))));
     }
 
     @ExceptionHandler(UserException.class)
     public ResponseEntity<?> handleUserException(UserException e) {
+        log.error(e.getMessage(), e);
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 }

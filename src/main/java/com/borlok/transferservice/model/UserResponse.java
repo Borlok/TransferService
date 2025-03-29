@@ -3,6 +3,7 @@ package com.borlok.transferservice.model;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -41,5 +42,9 @@ public final class UserResponse {
 
     public static List<UserResponse> of(List<User> users) {
         return users.stream().map(UserResponse::of).collect(Collectors.toList());
+    }
+
+    public static Page<UserResponse> of(Page<User> users) {
+        return users.map(UserResponse::of);
     }
 }

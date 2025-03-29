@@ -3,6 +3,7 @@ package com.borlok.transferservice.service;
 import com.borlok.transferservice.model.User;
 import com.borlok.transferservice.model.UserRequest;
 import com.borlok.transferservice.model.UserSearchParameters;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -14,5 +15,5 @@ import java.util.List;
 public interface UserService {
     User getByEmailOrPhoneNumber(String username);
     User update(Long userId, UserRequest userRequest);
-    List<User> findByParameters(UserSearchParameters userSearchParameters);
+    Page<User> findByParameters(UserSearchParameters userSearchParameters);
 }

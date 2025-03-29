@@ -10,6 +10,8 @@ import com.borlok.transferservice.service.PhoneService;
 import com.borlok.transferservice.service.UserService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,13 +50,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findByParameters(UserSearchParameters userSearchParameters) {
+    public Page<User> findByParameters(UserSearchParameters userSearchParameters) {
         log.info("findByParameters: {}", userSearchParameters);
         Specification<User> spec = Specification.where(null);
+        PageRequest pageRequest = PageRequest.of(userSearchParameters.getPage(), userSearchParameters.getSize());
         spec = UserSpecification.nameFilter(spec, userSearchParameters.getName())
                 .and(UserSpecification.emailFilter(spec, userSearchParameters.getEmail()))
                 .and(UserSpecification.phoneFilter(spec, userSearchParameters.getPhone()))
                 .and(UserSpecification.birthFilter(spec, userSearchParameters.getDateOfBirth()));
-        return userRepository.findAll(spec);
+        return userRepository.findAll(spec, pageRequest);
     }
 }
