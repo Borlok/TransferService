@@ -4,7 +4,6 @@ import com.borlok.transferservice.exception.user.EmailException;
 import com.borlok.transferservice.exception.user.EmailExceptionMessage;
 import com.borlok.transferservice.exception.user.PhoneException;
 import com.borlok.transferservice.exception.user.PhoneExceptionMessage;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

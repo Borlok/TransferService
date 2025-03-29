@@ -32,4 +32,11 @@ public class TransferRequest {
         if (value.scale() > 2)
             throw new AccountException(AccountExceptionMessage.INVALID_TRANSFER_AMOUNT_PRECISION);
     }
+
+    public void setValue(BigDecimal value) {
+        if (this.value == null) {
+            validateValue(value);
+            this.value = value;
+        }
+    }
 }
