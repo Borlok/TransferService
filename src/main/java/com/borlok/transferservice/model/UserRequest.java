@@ -4,7 +4,9 @@ import com.borlok.transferservice.exception.user.EmailException;
 import com.borlok.transferservice.exception.user.EmailExceptionMessage;
 import com.borlok.transferservice.exception.user.PhoneException;
 import com.borlok.transferservice.exception.user.PhoneExceptionMessage;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -14,11 +16,12 @@ import java.util.regex.Pattern;
  */
 
 @Data
+@NoArgsConstructor
 public final class UserRequest {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String PHONE_REGEX = "^([78])\\d{10}$";
-    private final List<String> emails;
-    private final List<String> phones;
+    private List<String> emails;
+    private List<String> phones;
 
     public UserRequest(List<String> emails, List<String> phones) {
         this.emails = emails;

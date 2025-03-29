@@ -1,5 +1,7 @@
 package com.borlok.transferservice.service.impl;
 
+import com.borlok.transferservice.exception.user.EmailException;
+import com.borlok.transferservice.exception.user.EmailExceptionMessage;
 import com.borlok.transferservice.model.Email;
 import com.borlok.transferservice.model.User;
 import com.borlok.transferservice.repository.EmailRepository;
@@ -35,9 +37,14 @@ public class EmailServiceImpl implements EmailService {
                 Email newEmail = new Email();
                 newEmail.setUser(user);
                 newEmail.setEmail(email);
-                user.getEmails().add(emailRepository.save(newEmail));
+                try {
+                    user.getEmails().add(emailRepository.save(newEmail));
+                } catch (Exception e) {
+                    log.error("Error adding new email {}", email, e);
+                    throw new EmailException(EmailExceptionMessage.EMAIL_IS_ALREADY_TAKEN);
+                }
             }
-        for(Email email : existingEmails)
+        for (Email email : existingEmails)
             if (!newEmailAddresses.contains(email.getEmail())) {
                 log.info("Removing existing email {}", email);
                 emailRepository.delete(email);

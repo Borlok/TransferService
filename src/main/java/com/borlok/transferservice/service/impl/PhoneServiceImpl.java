@@ -1,5 +1,7 @@
 package com.borlok.transferservice.service.impl;
 
+import com.borlok.transferservice.exception.user.PhoneException;
+import com.borlok.transferservice.exception.user.PhoneExceptionMessage;
 import com.borlok.transferservice.model.Phone;
 import com.borlok.transferservice.model.User;
 import com.borlok.transferservice.repository.PhoneRepository;
@@ -35,7 +37,12 @@ public class PhoneServiceImpl implements PhoneService {
                 Phone newPhone = new Phone();
                 newPhone.setUser(user);
                 newPhone.setPhone(phone);
-                user.getPhones().add(phoneRepository.save(newPhone));
+                try {
+                    user.getPhones().add(phoneRepository.save(newPhone));
+                } catch (Exception e) {
+                    log.error("Error adding new phone {}", phone, e);
+                    throw new PhoneException(PhoneExceptionMessage.PHONE_IS_ALREADY_TAKEN);
+                }
             }
         for(Phone phone : existingPhone) {
             if (!newPhoneAddresses.contains(phone.getPhone())) {
