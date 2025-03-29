@@ -8,6 +8,7 @@ import com.borlok.transferservice.service.AccountService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,7 +21,7 @@ import java.math.BigDecimal;
 @Service
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public Account getByUserId(Long userId) {
@@ -42,10 +43,10 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(recipient);
     }
 
-//    @Scheduled(fixedRate = 30000) // Каждые 30 секунд
-//    public void updateBalances() {
-//        String sql = "UPDATE account SET balance = balance * 1.10 WHERE balance < (balance * 2.07)";
-//        jdbcTemplate.update(sql);
-//    }
-
+    @Scheduled(fixedRate = 30000)
+    public void updateBalances() {
+        log.info("Updating balances");
+        String sql = "UPDATE accounts SET balance = balance * 1.10 WHERE balance < (initial_balance * 2.07)";
+        jdbcTemplate.update(sql);
+    }
 }
