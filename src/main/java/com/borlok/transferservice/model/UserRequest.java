@@ -1,14 +1,12 @@
 package com.borlok.transferservice.model;
 
-import com.borlok.transferservice.exception.EmailException;
-import com.borlok.transferservice.exception.EmailExceptionMessage;
-import com.borlok.transferservice.exception.PhoneException;
-import com.borlok.transferservice.exception.PhoneExceptionMessage;
+import com.borlok.transferservice.exception.user.EmailException;
+import com.borlok.transferservice.exception.user.EmailExceptionMessage;
+import com.borlok.transferservice.exception.user.PhoneException;
+import com.borlok.transferservice.exception.user.PhoneExceptionMessage;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**

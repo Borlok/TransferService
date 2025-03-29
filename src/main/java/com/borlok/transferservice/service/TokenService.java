@@ -13,4 +13,5 @@ public interface TokenService {
     String createToken(AuthenticationRequest authData, BCryptPasswordEncoder passwordEncoder);
     Authentication authenticate(String token);
     boolean isValid(String token);
+    String getUserId(String token);
 }

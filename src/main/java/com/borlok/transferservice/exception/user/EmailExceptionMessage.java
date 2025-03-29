@@ -1,4 +1,4 @@
-package com.borlok.transferservice.exception;
+package com.borlok.transferservice.exception.user;
 
 /**
  * @author Erofeevskiy Yuriy

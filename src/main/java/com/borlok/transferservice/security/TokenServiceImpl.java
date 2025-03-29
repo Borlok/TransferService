@@ -1,4 +1,4 @@
-package com.borlok.transferservice.service.impl;
+package com.borlok.transferservice.security;
 
 import com.borlok.transferservice.exception.auth.AuthenticationException;
 import com.borlok.transferservice.exception.auth.AuthenticationExceptionMessage;
@@ -83,5 +83,11 @@ public class TokenServiceImpl implements TokenService {
         } catch (JwtException | IllegalArgumentException e) {
             throw new AuthenticationException(AuthenticationExceptionMessage.JWT_TOKEN_IS_INVALID);
         }
+    }
+
+    @Override
+    public String getUserId(String token) {
+        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build()
+                .parseSignedClaims(token).getPayload().get("user_id").toString();
     }
 }
