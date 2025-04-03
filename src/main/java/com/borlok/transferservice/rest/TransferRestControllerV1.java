@@ -3,7 +3,7 @@ package com.borlok.transferservice.rest;
 import com.borlok.transferservice.exception.user.UserException;
 import com.borlok.transferservice.model.TransferRequest;
 import com.borlok.transferservice.model.TransferResponse;
-import com.borlok.transferservice.service.TokenService;
+import com.borlok.transferservice.security.TokenService;
 import com.borlok.transferservice.service.TransferService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

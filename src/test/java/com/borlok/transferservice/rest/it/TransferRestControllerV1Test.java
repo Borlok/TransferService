@@ -8,7 +8,7 @@ import com.borlok.transferservice.repository.EmailRepository;
 import com.borlok.transferservice.repository.PhoneRepository;
 import com.borlok.transferservice.repository.UserRepository;
 import com.borlok.transferservice.rest.TransferRestControllerV1;
-import com.borlok.transferservice.service.TokenService;
+import com.borlok.transferservice.security.TokenService;
 import com.borlok.transferservice.service.TransferService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;

@@ -1,4 +1,4 @@
-package com.borlok.transferservice.service;
+package com.borlok.transferservice.security;
 
 import com.borlok.transferservice.model.AuthenticationRequest;
 import org.springframework.security.core.Authentication;

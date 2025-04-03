@@ -1,7 +1,6 @@
 package com.borlok.transferservice.security;
 
 import com.borlok.transferservice.exception.auth.AuthenticationException;
-import com.borlok.transferservice.service.TokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

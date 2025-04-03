@@ -5,8 +5,8 @@ import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Erofeevskiy Yuriy
@@ -17,6 +17,13 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedEntityGraph (
+        name = "User_emails_phones",
+        attributeNodes = {
+                @NamedAttributeNode(value = "emails"),
+                @NamedAttributeNode(value = "phones")
+        }
+)
 @Entity
 @Table(name = "users")
 public class User {
@@ -30,12 +37,12 @@ public class User {
     @Column
     @ToString.Exclude
     private String password;
-    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="user")
     @ToString.Exclude
-    private List<Email> emails;
-    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
+    private Set<Email> emails;
+    @OneToMany(mappedBy="user")
     @ToString.Exclude
-    private List<Phone> phones;
+    private Set<Phone> phones;
 
     @Override
     public final boolean equals(Object o) {

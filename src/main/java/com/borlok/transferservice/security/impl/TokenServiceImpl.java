@@ -1,10 +1,10 @@
-package com.borlok.transferservice.security;
+package com.borlok.transferservice.security.impl;
 
 import com.borlok.transferservice.exception.auth.AuthenticationException;
 import com.borlok.transferservice.exception.auth.AuthenticationExceptionMessage;
 import com.borlok.transferservice.model.AuthenticationRequest;
 import com.borlok.transferservice.model.User;
-import com.borlok.transferservice.service.TokenService;
+import com.borlok.transferservice.security.TokenService;
 import com.borlok.transferservice.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

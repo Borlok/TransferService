@@ -1,5 +1,6 @@
 package com.borlok.transferservice.rest;
 
+import com.borlok.transferservice.exception.auth.AuthenticationException;
 import com.borlok.transferservice.model.AuthenticationRequest;
 import com.borlok.transferservice.service.AuthenticationService;
 import lombok.Data;
@@ -23,5 +24,10 @@ public class AuthenticationRestControllerV1 {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         log.info("User's authentication: {}", authenticationRequest.getUsername());
         return ResponseEntity.ok(authenticationService.createAuthenticationToken(authenticationRequest));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<?> handleAuthenticationException(AuthenticationException exception) {
+        return ResponseEntity.ok(exception.getMessage());
     }
 }

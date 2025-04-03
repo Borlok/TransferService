@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<User> findByParameters(UserSearchParameters userSearchParameters) {
-        log.info("findByParameters: {}", userSearchParameters);
+        log.info("findByParameters: {}\n", userSearchParameters);
         Specification<User> spec = Specification.where(null);
         PageRequest pageRequest = PageRequest.of(userSearchParameters.getPage(), userSearchParameters.getSize());
         spec = UserSpecification.nameFilter(spec, userSearchParameters.getName())

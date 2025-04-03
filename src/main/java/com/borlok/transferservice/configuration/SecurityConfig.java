@@ -1,7 +1,7 @@
 package com.borlok.transferservice.configuration;
 
 import com.borlok.transferservice.security.JwtFilter;
-import com.borlok.transferservice.service.TokenService;
+import com.borlok.transferservice.security.TokenService;
 import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
