@@ -1,6 +1,7 @@
 package com.borlok.transferservice.repository;
 
 import com.borlok.transferservice.model.Phone;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,6 @@ import java.util.Optional;
 
 @Repository
 public interface PhoneRepository extends JpaRepository<Phone, Long> {
-    @Query(value = "select * from phone_data where phone = ?1", nativeQuery = true)
+    @EntityGraph("phone_user")
     Optional<Phone> findByPhone(String phone);
 }

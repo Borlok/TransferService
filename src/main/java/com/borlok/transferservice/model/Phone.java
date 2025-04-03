@@ -9,6 +9,12 @@ import javax.persistence.*;
  */
 
 @Data
+@NamedEntityGraph (
+        name = "phone_user",
+        attributeNodes = {
+                @NamedAttributeNode(value = "user")
+        }
+)
 @Entity
 @Table(name = "phone_data")
 public class Phone {
